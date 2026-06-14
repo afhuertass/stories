@@ -5,7 +5,7 @@ const styleMap = {
   default: {
     wrapper: 'space-y-4',
     paragraph:
-      'font-story text-[1.7rem] leading-[1.6] tracking-[0.01em] text-slate-100/95 md:text-[2rem] md:leading-[1.5]',
+      'font-story text-[1.5rem] leading-[1.6] tracking-[0.01em] text-slate-100/95 md:text-[1.8rem] md:leading-[1.5]',
   },
   'dramatic-reveal': {
     wrapper: 'space-y-4 py-4 text-center',
@@ -16,16 +16,17 @@ const styleMap = {
 
 function FadingSentence({ text, style }) {
   const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start 95%', 'center 75%'],
-  });
-
-  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], [20, 0]);
 
   return (
-    <motion.span ref={ref} style={{ opacity, y, display: 'inline-block' }} className={style.paragraph}>
+    <motion.span
+      ref={ref}
+      initial={{ opacity: 0, y: 15 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 1.0, ease: 'easeOut' }}
+      className={style.paragraph}
+      style={{ display: 'inline-block' }}
+    >
       {text}{' '}
     </motion.span>
   );

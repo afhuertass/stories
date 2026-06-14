@@ -89,17 +89,19 @@ export default function StoryViewer({ story }) {
       <AnimatePresence>
         {canContinue && (
           <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            className="mt-6 flex justify-center pb-[18vh]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mt-6 flex min-h-[120px] justify-center pb-[18vh]"
           >
             <button
               type="button"
               onClick={revealNextChunk}
-              className="rounded-full border border-sky-300/20 bg-slate-950/80 px-5 py-3 font-signal text-xs uppercase tracking-[0.32em] text-sky-100 shadow-glow backdrop-blur-md transition hover:border-sky-200/40 hover:text-white"
+              className="group relative rounded-full border border-sky-300/20 bg-slate-950/80 px-8 py-4 font-signal text-xs uppercase tracking-[0.32em] text-sky-100 shadow-glow backdrop-blur-md transition hover:border-sky-200/50 hover:text-white"
             >
-              Continuar ↓
+              <span className="relative z-10">Continuar ↓</span>
+              <span className="absolute inset-0 rounded-full bg-sky-500/10 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
             </button>
           </motion.div>
         )}
