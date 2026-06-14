@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React from 'react';
+import { motion } from 'framer-motion';
 
 const styleMap = {
   default: {
     wrapper: 'space-y-4',
     paragraph:
-      'font-story text-[1.5rem] leading-[1.6] tracking-[0.01em] text-slate-100/95 md:text-[1.8rem] md:leading-[1.5]',
+      'font-story text-[1.4rem] leading-[1.6] tracking-[0.01em] text-slate-100/95 md:text-[1.6rem] md:leading-[1.5] text-justify',
   },
   'dramatic-reveal': {
     wrapper: 'space-y-4 py-4 text-center',
@@ -14,36 +14,22 @@ const styleMap = {
   },
 };
 
-function FadingSentence({ text, style }) {
-  const ref = useRef(null);
-
-  return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, y: 15 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 1.0, ease: 'easeOut' }}
-      className={style.paragraph}
-      style={{ display: 'inline-block' }}
-    >
-      {text}{' '}
-    </motion.span>
-  );
-}
-
 export default function TextChunk({ chunk }) {
   const style = styleMap[chunk.style] ?? styleMap.default;
 
-  // Split text by sentence-ending punctuation, keeping the delimiter
-  const sentences = chunk.content.flatMap((paragraph) =>
-    paragraph.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g) || [paragraph]
-  );
-
   return (
     <div className={style.wrapper}>
-      {sentences.map((sentence, index) => (
-        <FadingSentence key={index} text={sentence.trim()} style={style} />
+      {chunk.content.map((paragraph, index) => (
+        <motion.p
+          key={index}
+          className={style.paragraph}
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 1.0, ease: 'easeOut' }}
+        >
+          {paragraph}
+        </motion.p>
       ))}
     </div>
   );
