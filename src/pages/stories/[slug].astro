@@ -1,0 +1,43 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import StoryViewer from '../../components/StoryViewer.jsx';
+import { getAllStories } from '../../lib/stories.js';
+
+export async function getStaticPaths() {
+  const allStories = await getAllStories();
+
+  return allStories.map((story) => ({
+    params: { slug: story.slug },
+    props: { storyData: story },
+  }));
+}
+
+const { storyData } = Astro.props;
+---
+
+<MainLayout title={`${storyData.title} | Luego de Marcharnos`}>
+  <section class="mx-auto max-w-5xl">
+    <a
+      href="/"
+      class="inline-flex items-center gap-2 rounded-full border border-sky-300/10 bg-slate-950/40 px-4 py-2 font-signal text-xs uppercase tracking-[0.28em] text-slate-300/80 transition hover:border-sky-300/30 hover:text-white"
+    >
+      ← Volver al archivo
+    </a>
+
+    <header class="mt-8 rounded-[2rem] border border-sky-300/10 bg-slate-950/45 px-6 py-10 shadow-glow backdrop-blur-sm md:px-10 md:py-14">
+      <p class="font-signal text-[0.72rem] uppercase tracking-[0.36em] text-sky-200/55">
+        Relato
+      </p>
+      <h1 class="mt-5 font-display text-5xl font-bold tracking-[-0.04em] text-white md:text-7xl">
+        {storyData.title}
+      </h1>
+      <div class="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-300/75">
+        <span class="rounded-full border border-white/10 px-4 py-2">Por {storyData.author}</span>
+      </div>
+    </header>
+
+    <section class="mt-10 mx-auto max-w-4xl rounded-[2rem] border border-sky-300/10 bg-slate-950/35 px-6 py-8 shadow-glow backdrop-blur-sm md:px-10 md:py-10">
+      <StoryViewer story={storyData.story} client:load />
+    </section>
+  </section>
+</MainLayout>
