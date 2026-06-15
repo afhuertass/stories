@@ -80,7 +80,7 @@ export default function StoryViewer({ story }) {
       <audio ref={clickAudioRef} src="/assets/sounds/click.mp3" preload="auto" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-200/30 to-transparent" />
 
-      <div className="mx-auto max-w-4xl space-y-[10vh] py-[8vh] md:space-y-[14vh] md:py-[10vh]">
+      <div className="mx-auto max-w-4xl space-y-8 py-[4vh] md:space-y-12 md:py-[6vh]">
         {visibleChunks.map((chunk, index) => (
           <section
             key={`${chunk.type}-${index}`}

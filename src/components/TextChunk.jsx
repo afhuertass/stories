@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const styleMap = {
   default: {
-    wrapper: 'space-y-4',
+    wrapper: '',
     paragraph:
       'font-story text-[1.4rem] leading-[1.6] tracking-[0.01em] text-slate-100/95 md:text-[1.6rem] md:leading-[1.5] text-justify',
   },
@@ -31,6 +31,7 @@ export default function TextChunk({ chunk }) {
       {chunk.content.map((paragraph, index) => (
         <motion.div
           key={index}
+          className="mb-2"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
