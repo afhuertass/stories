@@ -26,7 +26,7 @@ export default function StoryViewer({ story }) {
     if (!currentChunk) return;
 
     // 80% chance to play sound
-    if (Math.random() < 0.6) {
+    if (Math.random() < 0.7) {
       clickAudioRef.current?.play().catch((e) => console.log('Audio playback failed', e));
     }
 
