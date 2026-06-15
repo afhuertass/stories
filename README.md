@@ -4,7 +4,7 @@ Este proyecto es una plataforma interactiva de relatos de ciencia ficción, dise
 
 ## Descripción
 
-"Luego de Marcharnos" presenta historias que se desarrollan como transmisiones del espacio profundo. La plataforma utiliza un formato de lectura progresiva donde los relatos se revelan poco a poco mientras el usuario avanza, apoyado por animaciones cinemáticas al hacer scroll.
+"Luego de Marcharnos" presenta historias que se desarrollan en un futuro lejano. La plataforma utiliza un formato de lectura progresiva donde los relatos se revelan poco a poco mientras el usuario avanza, apoyado por animaciones cinemáticas al hacer scroll.
 
 ## Características
 

@@ -20,7 +20,7 @@ function getSummary(text) {
 
 function parseParagraphs(markdown) {
   const lines = markdown.split(/\r?\n/);
-  const paragraphs = [];
+  const items = [];
   let title = '';
 
   for (const rawLine of lines) {
@@ -32,33 +32,44 @@ function parseParagraphs(markdown) {
       continue;
     }
 
-    let text = line;
-    while (text.startsWith('>')) {
-      text = text.slice(1).trim();
-    }
-
-    if (text) {
-      paragraphs.push(text);
+    if (line.startsWith('### ')) {
+      items.push({ text: line.slice(4).trim(), type: 'h3' });
+    } else if (line.startsWith('## ')) {
+      items.push({ text: line.slice(3).trim(), type: 'h2' });
+    } else {
+      let text = line;
+      while (text.startsWith('>')) {
+        text = text.slice(1).trim();
+      }
+      if (text) {
+        items.push({ text, type: 'p' });
+      }
     }
   }
 
-  return { title, paragraphs };
+  return { title, items };
 }
 
-function toStoryChunks(paragraphs) {
-  return paragraphs.map((paragraph) => {
-    if (/^fin$/i.test(paragraph)) {
+function toStoryChunks(items) {
+  return items.map((item) => {
+    if (/^fin$/i.test(item.text)) {
       return { type: 'text', style: 'dramatic-reveal', content: ['Fin'] };
     }
+    if (item.type === 'h2') {
+      return { type: 'text', style: 'h2', content: [item.text] };
+    }
+    if (item.type === 'h3') {
+      return { type: 'text', style: 'h3', content: [item.text] };
+    }
 
-    return { type: 'text', content: [paragraph] };
+    return { type: 'text', content: [item.text] };
   });
 }
 
 async function readStoryFile(fileName) {
   const fullPath = path.join(STORIES_DIR, fileName);
   const markdown = await readFile(fullPath, 'utf8');
-  const { title, paragraphs } = parseParagraphs(markdown);
+  const { title, items } = parseParagraphs(markdown);
   const fallbackTitle = fileName.replace(/\.md$/i, '');
   const storyTitle = title || fallbackTitle;
 
@@ -66,8 +77,8 @@ async function readStoryFile(fileName) {
     slug: slugify(storyTitle),
     title: storyTitle,
     author: DEFAULT_AUTHOR,
-    summary: getSummary(paragraphs[0] ?? storyTitle),
-    story: toStoryChunks(paragraphs),
+    summary: getSummary(items[0]?.text ?? storyTitle),
+    story: toStoryChunks(items),
   };
 }
 
