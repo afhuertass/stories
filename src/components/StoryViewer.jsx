@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import TextChunk from './TextChunk.jsx';
 import AnimationChunk from './AnimationChunk.jsx';
@@ -9,6 +9,7 @@ const AUTO_ADVANCE_PADDING = 300;
 export default function StoryViewer({ story }) {
   const [revealedCount, setRevealedCount] = useState(story.length ? 1 : 0);
   const [completed, setCompleted] = useState(false);
+  const clickAudioRef = useRef(null);
 
   useEffect(() => {
     setRevealedCount(story.length ? 1 : 0);
@@ -23,6 +24,11 @@ export default function StoryViewer({ story }) {
 
   const revealNextChunk = useCallback(() => {
     if (!currentChunk) return;
+
+    // 80% chance to play sound
+    if (Math.random() < 0.8) {
+      clickAudioRef.current?.play().catch((e) => console.log('Audio playback failed', e));
+    }
 
     if (isLastChunk) {
       setCompleted(true);
@@ -71,6 +77,7 @@ export default function StoryViewer({ story }) {
 
   return (
     <div className="relative">
+      <audio ref={clickAudioRef} src="/assets/sounds/click.mp3" preload="auto" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-200/30 to-transparent" />
 
       <div className="mx-auto max-w-4xl space-y-[10vh] py-[8vh] md:space-y-[14vh] md:py-[10vh]">
@@ -115,7 +122,7 @@ export default function StoryViewer({ story }) {
           className="mx-auto mt-16 max-w-3xl rounded-2xl border border-sky-400/10 bg-slate-950/35 px-6 py-5 text-center shadow-glow backdrop-blur-sm"
         >
           <p className="font-signal text-[0.72rem] uppercase tracking-[0.35em] text-sky-200/45">
-            Transmisión completa
+        FIN
           </p>
           <p className="mt-3 font-story text-2xl text-slate-100/90 md:text-3xl">Fin.</p>
         </motion.div>
